@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  app:
+    image: python:3.9-slim
+    container_name: langgraph_streamlit_app
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "8501:8501"  # Exposing Streamlit's default port
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - .env  # Load environment variables from .env file (for python-dotenv)
+    command: >
+      bash -c "pip install --no-cache-dir -r requirements.txt &&
+               streamlit run app.py"  # Ensure your entry file is named app.py
+
+    # Optional to ensure dependencies are installed on first run
+    depends_on:
+      - db
+
+  # Optional: if you want a DB or another service to depend on
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: umairkhan
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
