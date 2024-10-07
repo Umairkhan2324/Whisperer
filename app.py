@@ -80,7 +80,7 @@ app = workflow.compile()
 #)
 if "messages" not in st.session_state:
         st.session_state.messages = []
-st.title("News Whisperer")
+st.title("Whisperer")
 # for message in st.session_state.messages:
 #         if isinstance(message, HumanMessage):
 #             role = "user"
