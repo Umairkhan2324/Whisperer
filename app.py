@@ -5,7 +5,7 @@ from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
 from langchain.schema import HumanMessage,AIMessage,SystemMessage
 from langchain_core.runnables.graph import MermaidDrawMethod
-from IPython.display import display, Image
+# from IPython.display import display, Image
 from dotenv import load_dotenv
 import os 
 
@@ -81,14 +81,15 @@ app = workflow.compile()
 if "messages" not in st.session_state:
         st.session_state.messages = []
 st.title("News Whisperer")
-for message in st.session_state.messages:
-        if isinstance(message, HumanMessage):
-            role = "user"
-        if isinstance(message, AIMessage):
-            role = "assistant"
+# for message in st.session_state.messages:
+#         if isinstance(message, HumanMessage):
+#             role = "user"
+#         if isinstance(message, AIMessage):
+#             role = "assistant"
         
-        with st.chat_message(role):
-            st.markdown(message.content)
+#         with st.chat_message(role):
+#             st.markdown(message.content)
+
         # if isinstance(message, AIMessage):
         #     st.markdown(message.content)
 
@@ -99,12 +100,13 @@ if prompt := st.chat_input("What is up?"):
         with st.chat_message("user"):
               st.markdown(prompt)
 
-        result = app.invoke({"messages": st.session_state.messages})
+        result = app.invoke({"text": prompt})
         with st.chat_message("assistant"):
             # print(result)
-            m = result['messages'][-1]
-            if isinstance(m, AIMessage):
-                st.markdown(m.content)
-                st.session_state.messages.append(m)
-# else:
+            st.markdown(result['summary'])
+#             m = result['summary'][-1]
+#             if isinstance(m, AIMessage):
+#                 st.markdown(m.content)
+#                 st.session_state.messages.append(m)
+# # else:
 #     st.warning("Please enter news less than 500 tokens")
